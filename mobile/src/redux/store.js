@@ -2,35 +2,29 @@
  * @providesModule ReduxStore
  */
 
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, combineReducers, compose } from 'redux';
 import {
-    toast,
-    currentUser,
-    loader,
-    goBack,
-    routeIndex
+   user,
+  socketStatus
 } from './reducers';
-import { reducer as formReducer } from 'redux-form';
+import { reducer as reduxFormReducer } from 'redux-form';
 import { persistCombineReducers } from 'redux-persist';
 import { AsyncStorage } from 'react-native';
+import { persistStore, persistReducer } from 'redux-persist';
+import reduxStorage from 'redux-persist/lib/storage';
 
-const config = {
+
+const persistConfig = {
     key: 'primary',
-    storage: AsyncStorage,
+    storage: reduxStorage,
     whitelist: []
 };
 
-const store = createStore(
-    persistCombineReducers(config, {
-        toast,
-        currentUser,
-        loader,
-        goBack,
-        routeIndex,
-        form: formReducer
-    }),
-    undefined,
-    compose(applyMiddleware())
-);
+const persistedReducer = persistReducer(persistConfig, combineReducers({
+  user,
+  socketStatus,
+  form: reduxFormReducer
+}))
 
-export default store;
+export const store = createStore(persistedReducer)
+export const persistor = persistStore(store)

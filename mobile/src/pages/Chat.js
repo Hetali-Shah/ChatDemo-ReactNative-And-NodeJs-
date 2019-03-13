@@ -1,10 +1,12 @@
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, TextInput } from 'react-native';
-import io from "socket.io-client";
+import { FlatList, Text, View, TextInput } from 'react-native';
+import SocketUtils from '../utils/socket';
+import { ChatScreenStyle } from '../assets/style';
+import { Screen } from '../elements';
+import withUser from '../common/withUser';
 
-
-export default class App extends Component<Props> {
+class Chat extends Component<Props> {
 
   constructor(props){
     super(props);
@@ -14,53 +16,70 @@ export default class App extends Component<Props> {
     }
   }
 
-  componentDidMount(){
-    console.log("data=======> ")
-    this.socket = io("http://192.168.1.39:3000");
-    console.warn("in socket")
-    this.socket.on("get users", function (data){
-      console.log("data=======> ", data)
-      //this.setState({chatMessages:data})
-    });
-    this.socket.on("chat message", msg => {
-      this.setState({
-        chatMessages : [...this.state.chatMessages, msg]
-      })
-    })
+  componentWillMount() {
+    SocketUtils.joinRoom('send-message', this._receiveMessage)
+  }
 
-
+  componentWillUnmount() {
+    // SocketUtils.leaveRoom();
   }
 
   _submitChatMessage() {
-    console.log("jj")
-    this.socket.emit("chat message", this.state.chatMessage)
+    const {chatMessage} = this.state;
+    const {user} = this.props
+    SocketUtils.sendMessage({
+      message: chatMessage,
+      userName: user
+    })
     this.setState({
       chatMessage: ''
     })
   }
 
-  render() {
-    const chatMessages = this.state.chatMessages.map((chatMessage) => <Text key={chatMessage}>{chatMessage}</Text>)
+  _receiveMessage = (msg) => {
+    const {chatMessages} = this.state
+    chatMessages.push(msg)
+    this.setState({chatMessages})
+    this._chatMessages(chatMessages)
+  }
+
+  _chatMessages = (chatMessages) => {
     return (
-      <View style={styles.container}>
-        <TextInput
-          autoCorrect={false}
-          onChangeText={chatMessage => {
-            this.setState({ chatMessage })
-          }}
-          value={this.state.chatMessage}
-          onSubmitEditing={() => this._submitChatMessage()}
-          style={{height:40 , borderWidth:2}}
-        />
-        {chatMessages}
-      </View>
+      chatMessages.map((value, key) => (
+        <View>
+          <Text key={key} style={ChatScreenStyle.chatText}>helolo</Text>
+        </View>
+      ))
+    )
+  }
+
+  render() {
+    return (
+      <Screen
+        style={ChatScreenStyle.container}
+        disableKBDismissScroll={true}
+        keyboardShouldPersistTaps='always'
+        enableAutoAutomaticScroll={false}
+      >
+        <View style={ChatScreenStyle.chatInputView}>
+          <TextInput
+            placeholder="Type Message Here"
+            changeSuccessColor={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+            onChangeText={chatMessage => {
+              this.setState({ chatMessage })
+            }}
+            placeholderStyle={ChatScreenStyle.placeHolderStyle}
+            value={this.state.chatMessage}
+            onSubmitEditing={() => this._submitChatMessage()}
+            style={ChatScreenStyle.chatInputStyle}
+          />
+          <Text>{this.props.user}</Text>
+        </View>
+      </Screen>
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#F5FCFF',
-  },
-});
+export default withUser(Chat);

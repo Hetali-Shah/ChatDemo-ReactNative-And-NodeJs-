@@ -11,6 +11,7 @@ export default StyleSheet.create({
     //padding: StyleConfig.screenPaddingValue,
   },
   gridView: {
+    justifyContent:'flex-end',
     marginTop: StyleConfig.countPixelRatio(20),
     padding: StyleConfig.screenPaddingValue,
   },

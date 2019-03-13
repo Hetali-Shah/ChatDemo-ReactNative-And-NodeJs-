@@ -1,41 +1,25 @@
 /**
  * @providesModule ReduxActions
  */
+//ACTION TYPE
+export const USER_SET = 'user/SET';
+export const SOCKET_STATUS_SET = 'socketStatus/SET';
+export const RESET_REDUX = 'redux/RESET';
 
-export const NOTIFICATION_PUSH = 'notification/PUSH';
-export const NOTIFICATION_POP = 'notification/POP';
-export const CURRENT_USER_SET = 'currentUser/SET';
-export const LOADER_SET = 'loader/SET';
-export const GO_BACK_SET = 'goBack/SET';
-export const ROUTE_INDEX_SET = 'routeIndex/SET';
 
-// action creators
+//ACTIONS
 
-export const notificationPush = text => ({
-    type: NOTIFICATION_PUSH,
-    text
+export const resetRedux = () => ({
+  type: RESET_REDUX
 });
 
-export const notificationPop = () => ({
-    type: NOTIFICATION_POP
+export const userSet = user => ({
+  type: USER_SET,
+  user
 });
 
-export const currentUserSet = user => ({
-    type: CURRENT_USER_SET,
-    user
+export const socketStatusSet = data => ({
+  type: SOCKET_STATUS_SET,
+  data
 });
 
-export const loaderSet = state => ({
-    type: LOADER_SET,
-    state
-});
-
-export const routeIndexSet = state => ({
-    type: ROUTE_INDEX_SET,
-    state
-});
-
-export const gobackSet = state => ({
-    type: GO_BACK_SET,
-    state
-});

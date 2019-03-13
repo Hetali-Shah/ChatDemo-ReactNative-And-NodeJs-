@@ -5,8 +5,9 @@ import { reduxForm } from 'redux-form';
 import { Actions } from 'react-native-router-flux';
 import { Screen, ReduxField, AppButton } from  '../elements'
 import {SignUpStyle } from '../assets/style';
-import {emailRegex, ROUTE_MAP} from '../common/global';
-import io from "socket.io-client";
+import {emailRegex, ROUTE_MAP, storeUser} from '../common/global';
+import SocketUtils from '../utils/socket';
+import withUser from '../common/withUser';
 
 class SignUp extends Component {
 
@@ -15,23 +16,23 @@ class SignUp extends Component {
     this.state = {
       user: '',
       users:[]
-    }
+    };
+
+    SocketUtils.init()
   }
 
-  componentDidMount(){
-    this.socket = io("http://192.168.1.39:3000");
-    this.socket.on("new user", user => {
-      this.setState({
-        users : [...this.state.users, user]
-      })
-    })
-  }
   _onSubmit = (formData) =>{
-    console.log("formData", formData)
-    this.socket.emit("new user", formData.user)
+    const { setUser } = this.props;
+    //STORE USER NAME IN ASYNCSTORAGE
+    storeUser(formData)
+
+    //STORE USER IN REDUX SET 'setUser'
+    setUser(formData.user)
+
     this.setState({
       user: ''
     })
+
     Actions[ROUTE_MAP[1]]()
   };
 
@@ -93,4 +94,4 @@ const withForm = reduxForm({
   initialValues: initialState
 });
 
-export default withForm(SignUp);
+export default withForm(withUser(SignUp));
