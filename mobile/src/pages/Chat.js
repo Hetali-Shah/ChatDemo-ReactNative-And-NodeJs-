@@ -18,32 +18,34 @@ class Chat extends Component<Props> {
   }
 
   componentWillMount() {
-    SocketUtils.joinRoom('send-message', this._receiveMessage)
-    console.log("this.props-------", this.props)
-    let userName = this.props.addChatUser.name
+    const {addChatUser:{name, id}} = this.props;
+    SocketUtils.joinRoom(`message-${id}`, this._receiveMessage)
     this.setState({
-      userName
+      userName: name
     })
   }
 
   componentWillUnmount() {
-    // SocketUtils.leaveRoom();
+    SocketUtils.leaveRoom();
   }
 
   _submitChatMessage() {
     const {chatMessage} = this.state;
-    const {user} = this.props
+    const {addChatUser:{id}, user} = this.props
+
     SocketUtils.sendMessage({
       message: chatMessage,
+      roomId: id,
       userName: user
-    })
+    });
+
     this.setState({
       chatMessage: ''
     })
   }
 
   _receiveMessage = (msg) => {
-    const {chatMessages} = this.state
+    const {chatMessages} = this.state;
     chatMessages.push(msg)
     this.setState({chatMessages})
   };

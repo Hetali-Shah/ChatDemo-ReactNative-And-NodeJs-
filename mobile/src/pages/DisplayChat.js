@@ -10,77 +10,40 @@ class DisplayChat extends Component {
   constructor(props){
     super(props);
     this.state = {
-      chatResult: [
-        {
-          id:1,
-          img:'https://avatars3.githubusercontent.com/u/533360?v=3&s=466',
-          name:'Hetali Shah',
-        },
-        {
-          id:2,
-          img:'https://avatars3.githubusercontent.com/u/533360?v=3&s=466',
-          name:'Vixita',
-        },
-        {
-          id:3,
-          img:'https://avatars3.githubusercontent.com/u/533360?v=3&s=466',
-          name:'Sonika',
-        },
-        {
-          id:4,
-          img:'https://avatars3.githubusercontent.com/u/533360?v=3&s=466',
-          name:'Hinal',
-        },
-        {
-          id:5,
-          img:'https://avatars3.githubusercontent.com/u/533360?v=3&s=466',
-          name:'Monika',
-        },
-        {
-          id:6,
-          img:'https://avatars3.githubusercontent.com/u/533360?v=3&s=466',
-          name:'nirav',
-        },
-        {
-          id:7,
-          img:'https://avatars3.githubusercontent.com/u/533360?v=3&s=466',
-          name:'Hiren Bhai',
-        },
+      allRooms: [
+        {id:'R1', name:'Room 1'},
+        {id:'R2', name:'Room 2'},
+        {id:'R3', name:'Room 3'},
+        {id:'R4', name:'Room 4'},
+        {id:'R5', name:'Room 5'}
       ]
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    console.log("next0", nextProps)
-  }
-
   _onPressPerson = (personDetails) => {
     const {chatUser} = this.props;
-
     chatUser(personDetails);
-
     Actions[ROUTE_MAP[2]]();
   };
 
   _displayChatList = ({item}) => {
-    const {name, img } = item
+    const {name} = item
     return (
       <View style={DisplayChatScreen.singlePeopleResultView}>
         <TouchableOpacity onPress={() => this._onPressPerson(item)}>
           <View style={DisplayChatScreen.flexRow}>
             <View style={DisplayChatScreen.flexRow}>
-              <View style={DisplayChatScreen.peopleImageView}>
+              {/*<View style={DisplayChatScreen.peopleImageView}>
                 <Image
                   style={DisplayChatScreen.peopleImageStyle}
                   source={{uri:img}}
                   //source={AppImages.person1}
                 />
-              </View>
+              </View>*/}
 
               <View style={DisplayChatScreen.peopleTextView}>
                 <Text style={DisplayChatScreen.nameStyle}>{name}</Text>
               </View>
-
             </View>
           </View>
         </TouchableOpacity>
@@ -89,7 +52,7 @@ class DisplayChat extends Component {
   };
 
   render() {
-    const { chatResult } = this.state;
+    const { allRooms } = this.state;
     return (
       <Screen scrollEnabled={true} style={DisplayChatScreen.container}>
         <ScrollView
@@ -100,7 +63,7 @@ class DisplayChat extends Component {
           bounces={false}>
           <View style={DisplayChatScreen.peopleMainView}>
             <FlatList
-              data={chatResult}
+              data={allRooms}
               renderItem={this._displayChatList}
             />
           </View>

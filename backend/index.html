@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Chat Demo By Hetali Shah</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <style>
+        body{
+            margin-top: 30px;
+        }
+        #messageArea{
+            display: none;
+            justify-content: center;
+        }
+        #messageForm{
+            border-color: darkgreen;
+        }
+        #labelUserName{
+            display: inline-block;
+            margin-bottom: .5rem;
+            color: #007bff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #labelMessage{
+            display: inline-block;
+            margin: .5rem;
+            color: #007bff;
+            font-size: 24px;
+            font-weight: bold;
+            text-align: center;
+        }
+        #inputMessage{
+        margin-top: 200px;
+        }
+        #chatData{
+            background-color: gold;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+        }
+        #userName{
+            float: left;
+        }
+        #userMsg{
+            float: right;
+        }
+        #onlineUser{
+            color: #007bff;
+            font-size: 24px;
+            font-weight: bold;
+        }
+        #users{
+            color: green;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px;
+        }
+        .container::after{
+            clear: both;
+            display: table;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div id="userFormArea" class="row">
+        <div class="col-md-12">
+            <form id="userForm">
+                <div class="form-group">
+                    <label id="labelUserName">Enter UserName</label>
+                    <input class="form-control" id="username"/>
+                    <br/>
+                    <input type="submit" class="btn btn-primary" value="Login"/>
+
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="messageArea" class="row">
+        <div class="col-md-4">
+            <div class="well" id="onlineUser">
+                <h3>Rooms</h3>
+                <select id="rooms">
+                    <option value="R1">Room 1</option>
+                    <option value="R2">Room 2</option>
+                    <option value="R3">Room 3</option>
+                    <option value="R4">Room 4</option>
+                    <option value="R5">Room 5</option>
+                </select>
+            </div>
+        </div>
+        <div class="col-md-8" id="inputMessage">
+            <div class="chat" id="chat"></div>
+                <form id="messageForm">
+                    <div class="form-group">
+                        <label id="labelMessage" >Enter Message</label>
+                        <textarea class="form-control" id="message"></textarea>
+                        <br/>
+                        <input type="submit" class="btn btn-primary" value=
+                                "Send Message"/>
+
+                    </div>
+                </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+      var socket = io.connect();
+      var $messageForm = $('#messageForm');
+      var $message = $('#message');
+      var $chat = $('#chat');
+      var $messageArea = $('#messageArea');
+      var $userFormArea = $('#userFormArea');
+      var $userForm = $('#userForm');
+      var $rooms = $('#rooms');
+      var $username = $('#username');
+      var currentUser = '';
+      const rooms = ['R1', 'R2', 'R3', 'R4', 'R5'];
+
+      $messageForm.submit(function (e) {
+        e.preventDefault();
+        socket.emit('send-message', {message: $message.val(), roomId: $rooms.val(), userName: currentUser});
+        $message.val('');
+      });
+
+      joinRoom('R1');
+
+      $rooms.on('change', function () {
+        rooms.map(function (roomId) {
+          socket.removeListener(roomId)
+        });
+        joinRoom($rooms.val())
+      });
+
+      $userForm.submit(function (e) {
+        e.preventDefault();
+        $userFormArea.hide();
+        $messageArea.show();
+        currentUser = $username.val();
+      });
+
+      function joinRoom(roomId) {
+        socket.on('message-' + roomId, function(data) {
+          console.log('data', data);
+          $chat.append('<div class= "well" id="chatData"><strong id="userName">'+ data.userName+'</strong> &nbsp: <div id="userMsg">'+data.message+'</div></div>')
+        })
+      }
+
+    });
+</script>
+</body>
+</html>
