@@ -5,7 +5,8 @@
 import { createStore, combineReducers, compose } from 'redux';
 import {
    user,
-  socketStatus
+  socketStatus,
+  addChatUser,
 } from './reducers';
 import { reducer as reduxFormReducer } from 'redux-form';
 import { persistCombineReducers } from 'redux-persist';
@@ -23,6 +24,7 @@ const persistConfig = {
 const persistedReducer = persistReducer(persistConfig, combineReducers({
   user,
   socketStatus,
+  addChatUser,
   form: reduxFormReducer
 }))
 

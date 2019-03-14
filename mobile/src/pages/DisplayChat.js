@@ -2,9 +2,11 @@ import React, { Component } from 'react';
 import {View, FlatList, ScrollView, TouchableOpacity, Image, Text} from 'react-native';
 import {DisplayChatScreen} from '../assets/style'
 import {Screen} from '../elements';
-import AppImages from "../assets/images";
+import withAddChatUser from '../common/withAddChatUser';
+import {Actions} from 'react-native-router-flux';
+import {ROUTE_MAP} from '../common/global';
 
-export default class DisplayChat extends Component {
+class DisplayChat extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -48,12 +50,23 @@ export default class DisplayChat extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    console.log("next0", nextProps)
+  }
+
+  _onPressPerson = (personDetails) => {
+    const {chatUser} = this.props;
+
+    chatUser(personDetails);
+
+    Actions[ROUTE_MAP[2]]();
+  };
+
   _displayChatList = ({item}) => {
-    console.log("item", item)
-    const {name, img, id} = item
+    const {name, img } = item
     return (
       <View style={DisplayChatScreen.singlePeopleResultView}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => this._onPressPerson(item)}>
           <View style={DisplayChatScreen.flexRow}>
             <View style={DisplayChatScreen.flexRow}>
               <View style={DisplayChatScreen.peopleImageView}>
@@ -73,12 +86,10 @@ export default class DisplayChat extends Component {
         </TouchableOpacity>
       </View>
     )
-  }
-
+  };
 
   render() {
     const { chatResult } = this.state;
-    console.log("chatResult", chatResult)
     return (
       <Screen scrollEnabled={true} style={DisplayChatScreen.container}>
         <ScrollView
@@ -100,3 +111,4 @@ export default class DisplayChat extends Component {
 }
 
 
+export default withAddChatUser(DisplayChat);

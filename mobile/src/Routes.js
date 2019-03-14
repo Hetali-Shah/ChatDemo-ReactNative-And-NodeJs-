@@ -13,7 +13,7 @@ export default () => {
                        panHandlers={null} hideNavBar={true} />
 
               <Scene type="replace" index={1} key={ROUTE_MAP[1]} component={DisplayChat}
-                     panHandlers={null} hideNavBar={true}  initial/>
+                     panHandlers={null} hideNavBar={true} />
               <Scene type="replace" index={2} key={ROUTE_MAP[2]} component={ChatScreen}
                      panHandlers={null} hideNavBar={true} />
             </Scene>

@@ -3,8 +3,8 @@ import React, {Component} from 'react';
 import { FlatList, Text, View, TextInput } from 'react-native';
 import SocketUtils from '../utils/socket';
 import { ChatScreenStyle } from '../assets/style';
-import { Screen } from '../elements';
 import withUser from '../common/withUser';
+import withAddChatUser from '../common/withAddChatUser';
 
 class Chat extends Component<Props> {
 
@@ -12,12 +12,18 @@ class Chat extends Component<Props> {
     super(props);
     this.state = {
       chatMessage: '',
-      chatMessages: []
+      chatMessages: [],
+      userName: ''
     }
   }
 
   componentWillMount() {
     SocketUtils.joinRoom('send-message', this._receiveMessage)
+    console.log("this.props-------", this.props)
+    let userName = this.props.addChatUser.name
+    this.setState({
+      userName
+    })
   }
 
   componentWillUnmount() {
@@ -37,37 +43,22 @@ class Chat extends Component<Props> {
   }
 
   _receiveMessage = (msg) => {
-    console.log("message", msg)
     const {chatMessages} = this.state
     chatMessages.push(msg)
     this.setState({chatMessages})
-  }
-
-  // _chatMessages = (chatMessages) => {
-  //   console.log(chatMessages)
-  //   return (
-  //     chatMessages.map((value, key) => {
-  //       console.log("value-------", value.userName)
-  //       return (
-  //         <View style={{borderWidth:1, backgroundColor:'red'}}>
-  //           <Text>{value.userName}</Text>
-  //         </View>
-  //       )})
-  //   )
-  // }
+  };
 
   render() {
     const {chatMessages} = this.state
-    console.log("chat", chatMessages)
     return (
       <View style={{flex:1}}>
-        <Text style={ChatScreenStyle.userName}>{this.props.user}</Text>
+        <Text style={ChatScreenStyle.userName}>{this.state.userName}</Text>
         <View style={ChatScreenStyle.container}>
           <View>
             {
               chatMessages && chatMessages.map((value, key) => (
                 <View key={key} style={{paddingVertical:10}}>
-                  <Text style={(value.userName === this.props.user) ?  ChatScreenStyle.chatReply : ChatScreenStyle.chatMsg }>{value.userName} : {value.message}</Text>
+                  <Text style={(value.userName === this.props.user) ?  ChatScreenStyle.chatReply : ChatScreenStyle.chatMsg }>{value.message}</Text>
                 </View>
               ))
             }
@@ -93,4 +84,4 @@ class Chat extends Component<Props> {
   }
 }
 
-export default withUser(Chat);
+export default withUser(withAddChatUser(Chat));
