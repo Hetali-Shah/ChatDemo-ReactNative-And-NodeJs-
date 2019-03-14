@@ -4,39 +4,54 @@ import StyleConfig from './config';
 
 export default StyleSheet.create({
   container: {
-    backgroundColor: StyleConfig.darkBlue,
+    backgroundColor: StyleConfig.darkBlue2,
     flex: 1,
-    height: WINDOW.height,
-    //width: WINDOW.width,
     padding: StyleConfig.screenPaddingValue,
-    borderWidth:1
   },
   chatInputView:{
-    paddingTop:100,
+    justifyContent:'flex-end',
     flex:1,
-    justifyContent:'flex-start',
-    //alignItems:'flex-end'
   },
   chatInputStyle:{
-    borderRadius: StyleConfig.countPixelRatio(10),
     fontSize:StyleConfig.fontSizeH8,
     color:StyleConfig.doveGray3,
     backgroundColor: StyleConfig.white,
-    fontFamily:StyleConfig.bold
+    fontFamily:StyleConfig.bold,
+    borderRadius:StyleConfig.countPixelRatio(10)
   },
-  chatText:{
-    paddingVertical:20,
-    marginBottom:20,
-    borderBottomEndRadius:StyleConfig.countPixelRatio(20),
-    fontSize:StyleConfig.fontSizeH8,
-    color:StyleConfig.black1,
-    backgroundColor: StyleConfig.turbo,
-    fontFamily:StyleConfig.black,
-    borderWidth: 1
+  chatMsg:{
+    alignSelf:'flex-start',
+    fontSize:StyleConfig.fontSizeH9,
+    color:StyleConfig.fountainBlue,
+    backgroundColor: StyleConfig.white2,
+    fontFamily:StyleConfig.bold,
+    borderBottomLeftRadius:StyleConfig.countPixelRatio(10),
+    borderTopRightRadius:StyleConfig.countPixelRatio(10),
+    padding: StyleConfig.countPixelRatio(5),
+    elevation: 10
+  },
+  chatReply:{
+    alignSelf:'flex-end',
+    fontSize:StyleConfig.fontSizeH9,
+    color:StyleConfig.brilliantRose,
+    backgroundColor: StyleConfig.white2,
+    fontFamily:StyleConfig.bold,
+    borderBottomRightRadius:StyleConfig.countPixelRatio(10),
+    borderTopLeftRadius:StyleConfig.countPixelRatio(10),
+    padding: StyleConfig.countPixelRatio(5),
+    elevation: 10
   },
   placeHolderStyle:{
     fontSize:StyleConfig.fontSizeH8,
     color:StyleConfig.black1,
-    fontFamily:StyleConfig.regular
+    fontFamily:StyleConfig.regular,
+    paddingHorizontal:10
   },
+  userName:{
+    fontSize:StyleConfig.fontSizeH6,
+    color:StyleConfig.black1,
+    fontFamily:StyleConfig.bold,
+    alignSelf:'flex-end',
+    padding:StyleConfig.countPixelRatio(10),
+  }
 })

@@ -37,47 +37,58 @@ class Chat extends Component<Props> {
   }
 
   _receiveMessage = (msg) => {
+    console.log("message", msg)
     const {chatMessages} = this.state
     chatMessages.push(msg)
     this.setState({chatMessages})
-    this._chatMessages(chatMessages)
   }
 
-  _chatMessages = (chatMessages) => {
-    return (
-      chatMessages.map((value, key) => (
-        <View>
-          <Text key={key} style={ChatScreenStyle.chatText}>helolo</Text>
-        </View>
-      ))
-    )
-  }
+  // _chatMessages = (chatMessages) => {
+  //   console.log(chatMessages)
+  //   return (
+  //     chatMessages.map((value, key) => {
+  //       console.log("value-------", value.userName)
+  //       return (
+  //         <View style={{borderWidth:1, backgroundColor:'red'}}>
+  //           <Text>{value.userName}</Text>
+  //         </View>
+  //       )})
+  //   )
+  // }
 
   render() {
+    const {chatMessages} = this.state
+    console.log("chat", chatMessages)
     return (
-      <Screen
-        style={ChatScreenStyle.container}
-        disableKBDismissScroll={true}
-        keyboardShouldPersistTaps='always'
-        enableAutoAutomaticScroll={false}
-      >
-        <View style={ChatScreenStyle.chatInputView}>
-          <TextInput
-            placeholder="Type Message Here"
-            changeSuccessColor={true}
-            autoCapitalize="none"
-            autoCorrect={false}
-            onChangeText={chatMessage => {
-              this.setState({ chatMessage })
-            }}
-            placeholderStyle={ChatScreenStyle.placeHolderStyle}
-            value={this.state.chatMessage}
-            onSubmitEditing={() => this._submitChatMessage()}
-            style={ChatScreenStyle.chatInputStyle}
-          />
-          <Text>{this.props.user}</Text>
+      <View style={{flex:1}}>
+        <Text style={ChatScreenStyle.userName}>{this.props.user}</Text>
+        <View style={ChatScreenStyle.container}>
+          <View>
+            {
+              chatMessages && chatMessages.map((value, key) => (
+                <View key={key} style={{paddingVertical:10}}>
+                  <Text style={(value.userName === this.props.user) ?  ChatScreenStyle.chatReply : ChatScreenStyle.chatMsg }>{value.userName} : {value.message}</Text>
+                </View>
+              ))
+            }
+          </View>
+          <View style={ChatScreenStyle.chatInputView}>
+            <TextInput
+              placeholder="Type Message Here"
+              changeSuccessColor={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              onChangeText={chatMessage => {
+                this.setState({ chatMessage })
+              }}
+              placeholderStyle={ChatScreenStyle.placeHolderStyle}
+              value={this.state.chatMessage}
+              onSubmitEditing={() => this._submitChatMessage()}
+              style={ChatScreenStyle.chatInputStyle}
+            />
+          </View>
         </View>
-      </Screen>
+      </View>
     );
   }
 }

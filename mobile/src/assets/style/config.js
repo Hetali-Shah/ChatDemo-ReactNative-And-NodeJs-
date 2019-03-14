@@ -49,7 +49,15 @@ const AppColors = {
   persimmon:'rgba(255, 87, 87, 1)',
   gallery:'#EFEFEF',
   iron: '#BAB9BA',
-  red: 'rgb(255,0,0)'
+  red: 'rgb(255,0,0)',
+  progressGreen: '#1F973A',
+  progressOrange: '#F5951B',
+  completedBlue: '#2980B9',
+  recoverGreen: '#1B8633',
+  clementine: '#ed6000',
+  ironLight:'#cdd2d3',
+  catlinaBlue: '#273C5A',
+  brilliantRose: '#FF1D78'
 }
 
 export default {

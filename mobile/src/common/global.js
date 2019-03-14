@@ -24,5 +24,6 @@ export const getAuthToken = async () => {
 
 export const ROUTE_MAP = [
   'signUp',
-  'chat'
+  'displayChat',
+  'chat',
 ];

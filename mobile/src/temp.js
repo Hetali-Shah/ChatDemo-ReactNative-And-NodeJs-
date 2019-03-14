@@ -56,3 +56,24 @@ const styles = StyleSheet.create({
     backgroundColor: '#F5FCFF',
   },
 });
+
+{/*<View style={DisplayChatScreen.singlePeopleResultView}>*/}
+{/*<TouchableOpacity>*/}
+{/*<View style={DisplayChatScreen.flexRow}>*/}
+{/*<View style={DisplayChatScreen.flexRow}>*/}
+{/*<View style={DisplayChatScreen.peopleImageView}>*/}
+{/*<Image*/}
+{/*style={DisplayChatScreen.peopleImageStyle}*/}
+{/*//source={{uri:img}}*/}
+{/*source={AppImages.person1}*/}
+{/*/>*/}
+{/*</View>*/}
+
+{/*<View style={DisplayChatScreen.peopleTextView}>*/}
+{/*<Text style={DisplayChatScreen.nameStyle}>{name}</Text>*/}
+{/*</View>*/}
+
+{/*</View>*/}
+{/*</View>*/}
+{/*</TouchableOpacity>*/}
+{/*</View>*/}
